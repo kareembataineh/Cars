@@ -106,8 +106,8 @@ void CarSearch::printLinks(std::vector<Car*> list) {
     }
 }
 
-void CarSearch::sortLowToHigh() {
-
+void CarSearch::heapSortLowToHigh() {
+    //Sorts cars in ascending order by price with a min heap
     auto start = high_resolution_clock::now();
     priority_queue<Car*, std::vector<Car*>, compareMin> minHeap;
     vector<Car*> sorted;
@@ -124,8 +124,8 @@ void CarSearch::sortLowToHigh() {
     cout << "Heap sort time: (low to high) " << time.count() << " ms" << endl;
 }
 
-void CarSearch::sortHighToLow() {
-
+void CarSearch::heapSortHighToLow() {
+    //Sorts cars in descending order by price with a max heap
     auto start = high_resolution_clock::now();
     priority_queue<Car*, std::vector<Car*>, compareMax> maxHeap;
     for (int i = 0; i < output.size(); ++i) {
@@ -139,6 +139,43 @@ void CarSearch::sortHighToLow() {
     auto end = high_resolution_clock::now();
     auto time = duration_cast<milliseconds>(end-start);
     cout << "Heap sort time: (high to low) " << time.count() << " ms" << endl;
+}
+
+
+void CarSearch::treeSortLowToHigh() {
+    //Sorts cars in ascending order by price with a map (red-black tree)
+    auto start = high_resolution_clock::now();
+    map<double, vector<Car*>> map;
+    for (int i = 0; i < output.size(); ++i) {
+        map[output[i]->price].push_back(output[i]);
+    }
+    output.clear();
+    for (auto it: map) {
+        for (int i = 0; i < it.second.size(); ++i) {
+            output.push_back(it.second[i]);
+        }
+    }
+    auto end = high_resolution_clock::now();
+    auto time = duration_cast<milliseconds>(end-start);
+    cout << "Tree sort time: (low to high) " << time.count() << " ms" << endl;
+}
+
+void CarSearch::treeSortHighToLow() {
+    //Sorts cars in descedning order by price with a map (red-black tree)
+    auto start = high_resolution_clock::now();
+    map<double, vector<Car*>> map;
+    for (int i = 0; i < output.size(); ++i) {
+        map[output[i]->price].push_back(output[i]);
+    }
+    output.clear();
+    for (auto it = map.rbegin(); it != map.rend() ; ++it) {
+        for (int i = 0; i < it->second.size(); ++i) {
+            output.push_back(it->second[i]);
+        }
+    }
+    auto end = high_resolution_clock::now();
+    auto time = duration_cast<milliseconds>(end-start);
+    cout << "Tree sort time: (high to low) " << time.count() << " ms" << endl;
 }
 
 const vector<Car*> &CarSearch::getOutput() const {
