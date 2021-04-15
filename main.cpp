@@ -9,8 +9,10 @@ int main() {
     cars.printSize();
     cars.Search();
 
-    cars.sortLowToHigh();
-    cars.sortHighToLow();
+    cars.heapSortLowToHigh();
+    cars.heapSortHighToLow();
+    cars.treeSortLowToHigh();
+    cars.treeSortHighToLow();
     cars.printLinks(cars.getOutput());
 
     return 0;
