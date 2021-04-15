@@ -1,7 +1,3 @@
-//
-// Created by Kareem Bataineh on 4/6/21.
-//
-
 #include "CarSearch.h"
 
 using namespace std;
@@ -19,8 +15,6 @@ void CarSearch::generateData(string dataset) {
         car = createCar(s);
         if (car != NULL) {
             table[car->idNum] = car;
-            tree[car->idNum] = car;
-            heap.push(car);
         }
     }
 }
@@ -73,19 +67,17 @@ Car* CarSearch::createCar(string data) {
 
 }
 
-void CarSearch::printSizes() {
+void CarSearch::printSize() {
     cout << "table size: " << table.size() << endl;
-    cout << "tree size: " << tree.size() << endl;
-    cout << "heap size: " << heap.size() << endl;
 }
 
-std::vector<Car*>
-CarSearch::getLinksFromTable(double lowPrice, double highPrice, int lowYear, int highYear, std::string make, std::string model,
-                             std::string condition, int lowmiles, int highmiles) {
+
+void CarSearch::Search(double lowPrice, double highPrice, int lowYear, int highYear, std::string make, std::string model,
+                       std::string condition, int lowmiles, int highmiles) {
 
     auto start = high_resolution_clock::now();
-    vector<Car*> listURL;
     Car* temp;
+    output.clear();
 
     for (auto it: table) {
         temp = it.second;
@@ -95,39 +87,14 @@ CarSearch::getLinksFromTable(double lowPrice, double highPrice, int lowYear, int
                 || (condition != "" && temp->condition != condition)) {
                 continue;
             }
-            listURL.push_back(temp);
+            output.push_back(temp);
         }
     }
     auto end = high_resolution_clock::now();
     auto time = duration_cast<milliseconds>(end-start);
-    cout << "Time: " << time.count() << " ms" << endl;
-    return listURL;
+    cout << "Selection time: " << time.count() << " ms" << endl;
 }
 
-std::vector<Car*>
-CarSearch::getLinksFromTree(double lowPrice, double highPrice, int lowYear, int highYear, std::string make,
-                            std::string model, std::string condition, int lowmiles, int highmiles) {
-
-    auto start = high_resolution_clock::now();
-    vector<Car*> listURL;
-    Car* temp;
-
-    for (auto it: tree) {
-        temp = it.second;
-        if (temp->price > lowPrice && temp->price < highPrice && temp->year > lowYear
-            && temp->year < highYear && temp->mileage > lowmiles && temp->mileage < highmiles) {
-            if ((make != "" && temp->make != make) || (model != "" && temp->model != model)
-                || (condition != "" && temp->condition != condition)) {
-                continue;
-            }
-            listURL.push_back(temp);
-        }
-    }
-    auto end = high_resolution_clock::now();
-    auto time = duration_cast<milliseconds>(end-start);
-    cout << "Time: " << time.count() << " ms" << endl;
-    return listURL;
-}
 
 void CarSearch::printLinks(std::vector<Car*> list) {
 
@@ -137,4 +104,43 @@ void CarSearch::printLinks(std::vector<Car*> list) {
     for (int i = 0; i < list.size(); ++i) {
         ofs << list[i]->listingURL << endl;
     }
+}
+
+void CarSearch::sortLowToHigh() {
+
+    auto start = high_resolution_clock::now();
+    priority_queue<Car*, std::vector<Car*>, compareMin> minHeap;
+    vector<Car*> sorted;
+    for (int i = 0; i < output.size(); ++i) {
+        minHeap.push(output[i]);
+    }
+    output.clear();
+    while (!minHeap.empty()) {
+        output.push_back(minHeap.top());
+        minHeap.pop();
+    }
+    auto end = high_resolution_clock::now();
+    auto time = duration_cast<milliseconds>(end-start);
+    cout << "Heap sort time: (low to high) " << time.count() << " ms" << endl;
+}
+
+void CarSearch::sortHighToLow() {
+
+    auto start = high_resolution_clock::now();
+    priority_queue<Car*, std::vector<Car*>, compareMax> maxHeap;
+    for (int i = 0; i < output.size(); ++i) {
+        maxHeap.push(output[i]);
+    }
+    output.clear();
+    while (!maxHeap.empty()) {
+        output.push_back(maxHeap.top());
+        maxHeap.pop();
+    }
+    auto end = high_resolution_clock::now();
+    auto time = duration_cast<milliseconds>(end-start);
+    cout << "Heap sort time: (high to low) " << time.count() << " ms" << endl;
+}
+
+const vector<Car*> &CarSearch::getOutput() const {
+    return output;
 }
