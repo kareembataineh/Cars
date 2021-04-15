@@ -1,5 +1,6 @@
 #include <string>
 #include <unordered_map>
+#include <map>
 #include <queue>
 #include <fstream>
 #include <sstream>
@@ -47,7 +48,9 @@ public:
     );
 
     void printLinks(std::vector<Car*> list);
-    void sortLowToHigh();
-    void sortHighToLow();
+    void heapSortLowToHigh();
+    void heapSortHighToLow();
+    void treeSortLowToHigh();
+    void treeSortHighToLow();
     const std::vector<Car*> &getOutput() const;
 };
