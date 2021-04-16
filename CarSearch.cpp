@@ -4,7 +4,7 @@ using namespace std;
 using namespace std::chrono;
 
 void CarSearch::generateData(string dataset) {
-
+    //Creates a table with all of the data
     ifstream ifs(dataset);
     string s;
     Car* car;
@@ -20,7 +20,7 @@ void CarSearch::generateData(string dataset) {
 }
 
 Car* CarSearch::createCar(string data) {
-
+    //Creates a Car object from a string of data
     if (!isdigit(data[0]))
         return NULL;
 
@@ -74,7 +74,7 @@ void CarSearch::printSize() {
 
 void CarSearch::Search(double lowPrice, double highPrice, int lowYear, int highYear, std::string make, std::string model,
                        std::string condition, int lowmiles, int highmiles) {
-
+    //Finds all cars that match user's criteria
     auto start = high_resolution_clock::now();
     Car* temp;
     output.clear();
@@ -106,7 +106,7 @@ void CarSearch::printLinks(std::vector<Car*> list) {
     }
 }
 
-void CarSearch::heapSortLowToHigh() {
+int CarSearch::heapSortLowToHigh() {
     //Sorts cars in ascending order by price with a min heap
     auto start = high_resolution_clock::now();
     priority_queue<Car*, std::vector<Car*>, compareMin> minHeap;
@@ -122,9 +122,10 @@ void CarSearch::heapSortLowToHigh() {
     auto end = high_resolution_clock::now();
     auto time = duration_cast<milliseconds>(end-start);
     cout << "Heap sort time: (low to high) " << time.count() << " ms" << endl;
+    return time.count(); //Returns the time for this operation in milliseconds
 }
 
-void CarSearch::heapSortHighToLow() {
+int CarSearch::heapSortHighToLow() {
     //Sorts cars in descending order by price with a max heap
     auto start = high_resolution_clock::now();
     priority_queue<Car*, std::vector<Car*>, compareMax> maxHeap;
@@ -139,10 +140,11 @@ void CarSearch::heapSortHighToLow() {
     auto end = high_resolution_clock::now();
     auto time = duration_cast<milliseconds>(end-start);
     cout << "Heap sort time: (high to low) " << time.count() << " ms" << endl;
+    return time.count(); //Returns the time for this operation in milliseconds
 }
 
 
-void CarSearch::treeSortLowToHigh() {
+int CarSearch::treeSortLowToHigh() {
     //Sorts cars in ascending order by price with a map (red-black tree)
     auto start = high_resolution_clock::now();
     map<double, vector<Car*>> map;
@@ -158,9 +160,10 @@ void CarSearch::treeSortLowToHigh() {
     auto end = high_resolution_clock::now();
     auto time = duration_cast<milliseconds>(end-start);
     cout << "Tree sort time: (low to high) " << time.count() << " ms" << endl;
+    return time.count(); //Returns the time for this operation in milliseconds
 }
 
-void CarSearch::treeSortHighToLow() {
+int CarSearch::treeSortHighToLow() {
     //Sorts cars in descedning order by price with a map (red-black tree)
     auto start = high_resolution_clock::now();
     map<double, vector<Car*>> map;
@@ -176,6 +179,7 @@ void CarSearch::treeSortHighToLow() {
     auto end = high_resolution_clock::now();
     auto time = duration_cast<milliseconds>(end-start);
     cout << "Tree sort time: (high to low) " << time.count() << " ms" << endl;
+    return time.count(); //Returns the time for this operation in milliseconds
 }
 
 const vector<Car*> &CarSearch::getOutput() const {
