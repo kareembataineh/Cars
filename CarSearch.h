@@ -32,8 +32,8 @@ struct compareMax {
 class CarSearch {
 
 private:
-    std::unordered_map<int, Car*> table;
-    std::vector<Car*> output;
+    std::unordered_map<int, Car*> table; //data table
+    std::vector<Car*> output; //output to be shown to user
 
 public:
     void generateData(std::string dataset);
@@ -48,9 +48,9 @@ public:
     );
 
     void printLinks(std::vector<Car*> list);
-    void heapSortLowToHigh();
-    void heapSortHighToLow();
-    void treeSortLowToHigh();
-    void treeSortHighToLow();
+    int heapSortLowToHigh();
+    int heapSortHighToLow();
+    int treeSortLowToHigh();
+    int treeSortHighToLow();
     const std::vector<Car*> &getOutput() const;
 };
