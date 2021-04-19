@@ -15,22 +15,9 @@ struct Car {
     std::string make, model, condition, listingURL;
 };
 
-struct compareMin {
-    //Comparison for the Min heap
-    bool operator()(Car* left, Car* right) {
-        return left->price < right->price;
-    }
-};
-
-struct compareMax {
-    //Comparison for the Max heap
-    bool operator()(Car* left, Car* right) {
-        return left->price > right->price;
-    }
-};
-
 std::vector<Car*> mergeLowToHigh(std::vector<Car*> list1, std::vector<Car*> list2);
 std::vector<Car*> mergeHighToLow(std::vector<Car*> list1, std::vector<Car*> list2);
+
 
 class CarSearch {
 
@@ -57,5 +44,7 @@ public:
     std::vector<Car*> heapSortHighToLow(std::vector<Car*> unsortedResults);
     std::vector<Car*> mergesortLowToHigh(std::vector<Car*> list);
     std::vector<Car*> mergesortHighToLow(std::vector<Car*> list);
+    std::vector<Car*> radixSortLowToHigh(std::vector<Car*>& unsorted);
+    std::vector<Car*> radixSortHighToLow(std::vector<Car*>& unsorted);
     const std::vector<Car*> &getOutput() const;
 };
