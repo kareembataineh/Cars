@@ -29,6 +29,9 @@ struct compareMax {
     }
 };
 
+std::vector<Car*> mergeLowToHigh(std::vector<Car*> list1, std::vector<Car*> list2);
+std::vector<Car*> mergeHighToLow(std::vector<Car*> list1, std::vector<Car*> list2);
+
 class CarSearch {
 
 private:
@@ -48,9 +51,11 @@ public:
     );
 
     void printLinks(std::vector<Car*> list);
-    int heapSortLowToHigh();
-    int heapSortHighToLow();
     int treeSortLowToHigh();
     int treeSortHighToLow();
+    std::vector<Car*> heapSortLowToHigh(std::vector<Car*> unsortedResults);
+    std::vector<Car*> heapSortHighToLow(std::vector<Car*> unsortedResults);
+    std::vector<Car*> mergesortLowToHigh(std::vector<Car*> list);
+    std::vector<Car*> mergesortHighToLow(std::vector<Car*> list);
     const std::vector<Car*> &getOutput() const;
 };
