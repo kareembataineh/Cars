@@ -1,4 +1,6 @@
 #include "CarSearch.h"
+#include "minHeap.h"
+#include "maxHeap.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -106,43 +108,33 @@ void CarSearch::printLinks(std::vector<Car*> list) {
     }
 }
 
-int CarSearch::heapSortLowToHigh() {
+vector<Car*> CarSearch::heapSortLowToHigh(vector<Car*> unsortedResults) {
     //Sorts cars in ascending order by price with a min heap
-    auto start = high_resolution_clock::now();
-    priority_queue<Car*, std::vector<Car*>, compareMin> minHeap;
+    minHeap pq;
     vector<Car*> sorted;
-    for (int i = 0; i < output.size(); ++i) {
-        minHeap.push(output[i]);
+    for (int i = 0; i < unsortedResults.size(); i++) {
+        pq.insert(unsortedResults[i]);
     }
-    output.clear();
-    while (!minHeap.empty()) {
-        output.push_back(minHeap.top());
-        minHeap.pop();
+    while (!pq.empty()) {
+        sorted.push_back(pq.top());
+        pq.heapRemove();
     }
-    auto end = high_resolution_clock::now();
-    auto time = duration_cast<milliseconds>(end-start);
-    cout << "Heap sort time: (low to high) " << time.count() << " ms" << endl;
-    return time.count(); //Returns the time for this operation in milliseconds
+    return sorted;
 }
 
-int CarSearch::heapSortHighToLow() {
+vector<Car*> CarSearch::heapSortHighToLow(vector<Car*> unsortedResults) {
     //Sorts cars in descending order by price with a max heap
-    auto start = high_resolution_clock::now();
-    priority_queue<Car*, std::vector<Car*>, compareMax> maxHeap;
-    for (int i = 0; i < output.size(); ++i) {
-        maxHeap.push(output[i]);
+    maxHeap pq;
+    vector<Car*> sorted;
+    for (int i = 0; i < unsortedResults.size(); i++) {
+        pq.insert(unsortedResults[i]);
     }
-    output.clear();
-    while (!maxHeap.empty()) {
-        output.push_back(maxHeap.top());
-        maxHeap.pop();
+    while (!pq.empty()) {
+        sorted.push_back(pq.top());
+        pq.heapRemove();
     }
-    auto end = high_resolution_clock::now();
-    auto time = duration_cast<milliseconds>(end-start);
-    cout << "Heap sort time: (high to low) " << time.count() << " ms" << endl;
-    return time.count(); //Returns the time for this operation in milliseconds
+    return sorted;
 }
-
 
 int CarSearch::treeSortLowToHigh() {
     //Sorts cars in ascending order by price with a map (red-black tree)
@@ -167,8 +159,10 @@ int CarSearch::treeSortHighToLow() {
     //Sorts cars in descedning order by price with a map (red-black tree)
     auto start = high_resolution_clock::now();
     map<double, vector<Car*>> map;
+    //AVLTree tree;
     for (int i = 0; i < output.size(); ++i) {
         map[output[i]->price].push_back(output[i]);
+        //tree.insert(tree.getRoot(), output[i]);
     }
     output.clear();
     for (auto it = map.rbegin(); it != map.rend() ; ++it) {
@@ -176,10 +170,101 @@ int CarSearch::treeSortHighToLow() {
             output.push_back(it->second[i]);
         }
     }
+    //tree.inOrder(tree.getRoot(), output);
     auto end = high_resolution_clock::now();
     auto time = duration_cast<milliseconds>(end-start);
     cout << "Tree sort time: (high to low) " << time.count() << " ms" << endl;
     return time.count(); //Returns the time for this operation in milliseconds
+}
+
+vector<Car*> CarSearch::mergesortLowToHigh(vector<Car*> list) {
+    //Sorts cars in ascending order by price with merge sort algorithm
+    if (list.size() <= 1)
+        return list;
+
+    int length = list.size()/2;
+
+    vector<Car*> list1(list.begin(), list.begin()+length);
+    vector<Car*> list2(list.begin()+length, list.end());
+
+    list1 = mergesortLowToHigh(list1);
+    list2 = mergesortLowToHigh(list2);
+
+    output = mergeLowToHigh(list1, list2);
+    return output;
+}
+
+vector<Car*> mergeLowToHigh(vector<Car*> list1, vector<Car*> list2) {
+    //Helper function for the merge sort
+    vector<Car*> sortedList;
+
+    while (!list1.empty() && !list2.empty()) {
+        if (list1[0] > list2[0]) {
+            sortedList.push_back(list2[0]);
+            list2.erase(list2.begin());
+        }
+        else {
+            sortedList.push_back(list1[0]);
+            list1.erase(list1.begin());
+        }
+    }
+
+    while (!list1.empty()) {
+        sortedList.push_back(list1[0]);
+        list1.erase(list1.begin());
+    }
+
+    while (!list2.empty()) {
+        sortedList.push_back(list2[0]);
+        list2.erase(list2.begin());
+    }
+
+    return sortedList;
+}
+
+vector<Car*> CarSearch::mergesortHighToLow(vector<Car*> list) {
+    //Sorts cars in descending order by price with merge sort algorithm
+    if (list.size() <= 1)
+        return list;
+
+    int length = list.size()/2;
+
+    vector<Car*> list1(list.begin(), list.begin()+length);
+    vector<Car*> list2(list.begin()+length, list.end());
+
+    list1 = mergesortHighToLow(list1);
+    list2 = mergesortHighToLow(list2);
+
+    output = mergeHighToLow(list1, list2);
+    return output;
+}
+
+vector<Car*> mergeHighToLow(vector<Car*> list1, vector<Car*> list2) {
+    //Helper function for the merge sort
+    vector<Car*> sortedList;
+
+    while (!list1.empty() && !list2.empty()) {
+        if (list1[0] < list2[0]) {
+            sortedList.push_back(list2[0]);
+            list2.erase(list2.begin());
+        }
+        else {
+            sortedList.push_back(list1[0]);
+            list1.erase(list1.begin());
+        }
+    }
+
+    while (!list1.empty()) {
+        sortedList.push_back(list1[0]);
+        list1.erase(list1.begin());
+    }
+
+    while (!list2.empty()) {
+        sortedList.push_back(list2[0]);
+        list2.erase(list2.begin());
+    }
+
+    return sortedList;
 }
 
 const vector<Car*> &CarSearch::getOutput() const {
