@@ -267,6 +267,88 @@ vector<Car*> mergeHighToLow(vector<Car*> list1, vector<Car*> list2) {
     return sortedList;
 }
 
+void counterSort(vector<Car*>& v, int z)
+{
+    vector<Car*> answer;
+    vector<int> counter;
+
+    for (int i = 0; i < 10; i++)
+    {
+        counter.push_back(0);
+    }
+
+    for (int i = 0; i < v.size(); i++)
+    {
+        counter[(int(v[i]->price) / z) % 10]++;
+        answer.push_back(nullptr);
+    }
+
+    for (int i = 1; i < 10; i++)
+    {
+        counter[i] += counter[i - 1];
+    }
+
+
+
+    for (int i = v.size() - 1; i >= 0; i--)
+    {
+        answer[counter[(int(v[i]->price) / z) % 10] - 1] = v[i];
+        counter[(int(v[i]->price) / z) % 10]--;
+    }
+
+
+    for (int i = 0; i < v.size(); i++)
+    {
+        if (answer.at(i) != nullptr)
+        {
+            v.at(i) = answer.at(i);
+            //cout << v.at(i)->price << endl;
+        }
+
+    }
+}
+
+vector<Car*> CarSearch::radixSortLowToHigh(vector<Car*>& unsorted)
+{
+    vector<Car*> answer;
+
+    int max = 0;
+    for (int i = 0; i < unsorted.size(); i++)
+    {
+        if (unsorted[i]->price > max)
+            max = unsorted[i]->price;
+    }
+
+    for (int i = 1; (max / i) > 0; i *= 10)
+    {
+        counterSort(unsorted, i);
+    }
+
+    answer = unsorted;
+    return answer;
+}
+
+vector<Car*> CarSearch::radixSortHighToLow(vector<Car*>& unsorted)
+{
+    vector<Car*> answer;
+
+    int max = 0;
+    for (int i = 0; i < unsorted.size(); i++)
+    {
+        if (unsorted[i]->price > max)
+            max = unsorted[i]->price;
+    }
+
+    for (int i = 1; (max / i) > 0; i *= 10)
+    {
+        counterSort(unsorted, i);
+    }
+
+    answer = unsorted;
+    reverse(answer.begin(), answer.end());
+    return answer;
+}
+
 const vector<Car*> &CarSearch::getOutput() const {
     return output;
 }
