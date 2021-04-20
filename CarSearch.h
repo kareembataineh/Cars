@@ -17,7 +17,7 @@ struct Car {
 
 std::vector<Car*> mergeLowToHigh(std::vector<Car*> list1, std::vector<Car*> list2);
 std::vector<Car*> mergeHighToLow(std::vector<Car*> list1, std::vector<Car*> list2);
-
+void counterSort(std::vector<Car*>& v, int z);
 
 class CarSearch {
 
