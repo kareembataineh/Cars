@@ -30,7 +30,7 @@ namespace CppCLRWinformsProjekt {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Zusammenfassung für Form1
+	/// Zusammenfassung fÃ¼r Form1
 	/// </summary>
 	public ref class Form1 : public System::Windows::Forms::Form
 	{
@@ -39,7 +39,7 @@ namespace CppCLRWinformsProjekt {
 		{
 			InitializeComponent();
 			//
-			//TODO: Konstruktorcode hier hinzufügen.
+			//TODO: Konstruktorcode hier hinzufÃ¼gen.
 			//
 		}
 
@@ -86,6 +86,8 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::TextBox^ textBox7;
 	private: System::Windows::Forms::TextBox^ textBox8;
 	private: System::Windows::Forms::Label^ label15;
+	private: System::Windows::Forms::TextBox^ textBox9;
+	private: System::Windows::Forms::Label^ label16;
 
 
 	protected:
@@ -98,8 +100,8 @@ namespace CppCLRWinformsProjekt {
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung.
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Erforderliche Methode fÃ¼r die DesignerunterstÃ¼tzung.
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geÃ¤ndert werden.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -132,6 +134,8 @@ namespace CppCLRWinformsProjekt {
 			this->textBox7 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox8 = (gcnew System::Windows::Forms::TextBox());
 			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->textBox9 = (gcnew System::Windows::Forms::TextBox());
+			this->label16 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// textBox3
@@ -148,7 +152,7 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->button1->Font = (gcnew System::Drawing::Font(L"Modern No. 20", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->button1->Location = System::Drawing::Point(809, 113);
+			this->button1->Location = System::Drawing::Point(695, 112);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 30);
 			this->button1->TabIndex = 0;
@@ -184,7 +188,7 @@ namespace CppCLRWinformsProjekt {
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Modern No. 20", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(732, 117);
+			this->label3->Location = System::Drawing::Point(618, 116);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(71, 21);
 			this->label3->TabIndex = 3;
@@ -481,11 +485,36 @@ namespace CppCLRWinformsProjekt {
 			this->label15->TabIndex = 33;
 			this->label15->Text = L"Radixsort Time:";
 			// 
+			// textBox9
+			// 
+			this->textBox9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->textBox9->Location = System::Drawing::Point(904, 116);
+			this->textBox9->Name = L"textBox9";
+			this->textBox9->Size = System::Drawing::Size(75, 26);
+			this->textBox9->TabIndex = 36;
+			this->textBox9->Text = L"0";
+			this->textBox9->TextChanged += gcnew System::EventHandler(this, &Form1::textBox9_TextChanged);
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Font = (gcnew System::Drawing::Font(L"Modern No. 20", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label16->Location = System::Drawing::Point(796, 118);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(102, 21);
+			this->label16->TabIndex = 35;
+			this->label16->Text = L"Cars Found:";
+			this->label16->Click += gcnew System::EventHandler(this, &Form1::label16_Click);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1263, 647);
+			this->Controls->Add(this->textBox9);
+			this->Controls->Add(this->label16);
 			this->Controls->Add(this->textBox8);
 			this->Controls->Add(this->label15);
 			this->Controls->Add(this->textBox7);
@@ -698,9 +727,9 @@ namespace CppCLRWinformsProjekt {
 				textBox1->Visible = true;
 
 				// print low to high values
-				textBox5->Text = System::Convert::ToString(MergeSortTimeLOW);
-				textBox4->Text = System::Convert::ToString(heapSortTimeLOW);
-				textBox8->Text = System::Convert::ToString(RadixSortTimeLOW);
+				textBox5->Text = System::Convert::ToString(MergeSortTimeLOW + " ms");
+				textBox4->Text = System::Convert::ToString(heapSortTimeLOW + " ms");
+				textBox8->Text = System::Convert::ToString(RadixSortTimeLOW + " ms");
 			}
 			else {
 				textBox1->Clear();
@@ -719,10 +748,11 @@ namespace CppCLRWinformsProjekt {
 				textBox1->Visible = true;
 
 				// print high to low values
-				textBox5->Text = System::Convert::ToString(MergeSortTimeHIGH);
-				textBox4->Text = System::Convert::ToString(heapSortTimeHIGH);
-				textBox8->Text = System::Convert::ToString(RadixSortTimeHIGH);
+				textBox5->Text = System::Convert::ToString(MergeSortTimeHIGH + " ms");
+				textBox4->Text = System::Convert::ToString(heapSortTimeHIGH + " ms");
+				textBox8->Text = System::Convert::ToString(RadixSortTimeHIGH + " ms");
 			}
+			textBox9->Text = System::Convert::ToString(printOutHIGH.size());
 		}
 	}
 	private: System::Void label5_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -743,5 +773,9 @@ namespace CppCLRWinformsProjekt {
 	}
 	private: System::Void label15_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
+private: System::Void label16_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void textBox9_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+}
 };
 }
