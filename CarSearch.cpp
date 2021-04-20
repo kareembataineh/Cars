@@ -285,14 +285,15 @@ void counterSort(vector<Car*>& v, int z)
 
     for (int i = 1; i < 10; i++)
     {
-        counter[i] += counter[i - 1];
+        counter.at(i) += counter.at(i - 1);
     }
 
 
 
     for (int i = v.size() - 1; i >= 0; i--)
     {
-        answer[counter[(int(v[i]->price) / z) % 10] - 1] = v[i];
+
+        answer.at(counter.at((int(v[i]->price) / z) % 10) - 1) = v.at(i);
         counter[(int(v[i]->price) / z) % 10]--;
     }
 
@@ -315,8 +316,8 @@ vector<Car*> CarSearch::radixSortLowToHigh(vector<Car*>& unsorted)
     int max = 0;
     for (int i = 0; i < unsorted.size(); i++)
     {
-        if (unsorted[i]->price > max)
-            max = unsorted[i]->price;
+        if (unsorted.at(i)->price > max)
+            max = unsorted.at(i)->price;
     }
 
     for (int i = 1; (max / i) > 0; i *= 10)
@@ -335,8 +336,8 @@ vector<Car*> CarSearch::radixSortHighToLow(vector<Car*>& unsorted)
     int max = 0;
     for (int i = 0; i < unsorted.size(); i++)
     {
-        if (unsorted[i]->price > max)
-            max = unsorted[i]->price;
+        if (unsorted.at(i)->price > max)
+            max = unsorted.at(i)->price;
     }
 
     for (int i = 1; (max / i) > 0; i *= 10)
